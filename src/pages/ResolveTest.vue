@@ -1,12 +1,13 @@
 <template lang="pug">
 .ui.text.container
   .ui.header {{exam.title}}
-  answer-option(v-for='(question, index) in exam.questions', :number='index + 1', :description='exam.questions[index].description', :options='exam.questions[index].options')
+  answer-option(v-for='(question, index) in exam.questions', :number='index + 1', :description='exam.questions[index].description', :options='exam.questions[index].options', :answeredOptions='exam.answers[index + 1]')
   p
     a.ui.positive.button(@click='finish') Finalizar TD
 </template>
 
 <script>
+import ExamService from '@/services/ExamService'
 import AnswerOption from '@/components/AnswerOptionStudent'
 
 export default {
@@ -15,24 +16,16 @@ export default {
   },
   data () {
     return {
-      exam: {
-        title: 'TD Matemática I',
-        questions: [
-          {
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dapibus orci tincidunt nulla euismod, in porttitor velit mollis. Vivamus tincidunt eu libero feugiat tempor. Praesent nec porttitor ex. Etiam bibendum, orci et blandit ultricies, dui est imperdiet erat, vel mollis turpis massa vel dolor. Phasellus et varius risus. Nam id pulvinar justo, vitae semper nisl. Donec pharetra nulla nisl, sit amet auctor sem porttitor eleifend. Suspendisse convallis, ligula id laoreet viverra, eros quam dapibus velit, eget pellentesque arcu ipsum interdum lorem. Ut vestibulum, diam ac consequat malesuada, felis nisi sodales lectus, id elementum massa metus ac enim.',
-            options: ['Opção a', 'Opção b', 'Opção c', 'Opção d', 'Opção e']
-          },
-          {
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dapibus orci tincidunt nulla euismod, in porttitor velit mollis. Vivamus tincidunt eu libero feugiat tempor. Praesent nec porttitor ex. Etiam bibendum, orci et blandit ultricies, dui est imperdiet erat, vel mollis turpis massa vel dolor. Phasellus et varius risus. Nam id pulvinar justo, vitae semper nisl. Donec pharetra nulla nisl, sit amet auctor sem porttitor eleifend. Suspendisse convallis, ligula id laoreet viverra, eros quam dapibus velit, eget pellentesque arcu ipsum interdum lorem. Ut vestibulum, diam ac consequat malesuada, felis nisi sodales lectus, id elementum massa metus ac enim.',
-            options: ['Opção a', 'Opção b', 'Opção c', 'Opção d', 'Opção e']
-          },
-          {
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dapibus orci tincidunt nulla euismod, in porttitor velit mollis. Vivamus tincidunt eu libero feugiat tempor. Praesent nec porttitor ex. Etiam bibendum, orci et blandit ultricies, dui est imperdiet erat, vel mollis turpis massa vel dolor. Phasellus et varius risus. Nam id pulvinar justo, vitae semper nisl. Donec pharetra nulla nisl, sit amet auctor sem porttitor eleifend. Suspendisse convallis, ligula id laoreet viverra, eros quam dapibus velit, eget pellentesque arcu ipsum interdum lorem. Ut vestibulum, diam ac consequat malesuada, felis nisi sodales lectus, id elementum massa metus ac enim.',
-            options: ['Opção a', 'Opção b', 'Opção c', 'Opção d', 'Opção e']
-          }
-        ]
-      }
+      exam: {}
     }
+  },
+  mounted () {
+    ExamService.getAnsweredExam(this.$route.params.student, this.$route.params.examId)
+    .then(response => {
+      this.exam = response
+    }, err => {
+      console.error('Err ', err)
+    })
   },
   methods: {
     finish () {

@@ -9,6 +9,17 @@ export default {
   getAll () {
     return Vue.http.get(`${this.endpoint}/exams`)
   },
+  getAnsweredExam (studentId, examId) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${this.endpoint}/students/${studentId}`)
+      .then(response => {
+        console.log('My response... ', response)
+        resolve(response.body.doneExams.find(exam => exam._id === examId))
+      }, err => {
+        reject(err)
+      })
+    })
+  },
   answerExam (studentId, answers) {
     return Vue.http.put(`${this.endpoint}/students/${studentId}`, {
       $push: {
@@ -16,7 +27,7 @@ export default {
       },
       $pull: {
         todoExams: {
-          '_id' : answers._id
+          '_id': answers._id
         }
       }
     })
@@ -24,14 +35,10 @@ export default {
   examsToCorrect () {
     return new Promise((resolve, reject) => {
       Vue.http.get(`${this.endpoint}/students`).then(response => {
-        return response.body.data
-      }, err => {
-        reject(err)
-      }).then(students => {
         // Populates the examsToCorrect array
         const examsToCorrect = []
 
-        students.forEach(student => {
+        response.body.data.forEach(student => {
           student.doneExams.forEach(exam => {
             examsToCorrect.push({
               student: student,
@@ -41,6 +48,8 @@ export default {
         })
 
         resolve(examsToCorrect)
+      }, err => {
+        reject(err)
       })
     })
   },

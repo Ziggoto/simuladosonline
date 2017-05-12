@@ -27,9 +27,9 @@
       .ui.stacked.segment
         .ui.container
           .ui.header Questões do TD
-        .ui.segments
+        ul
           draggable(v-model='choosedQuestions', :options="{group:'people'}", @start='drag=true', @end='drag=false')
-            .ui.segment(v-for='question in choosedQuestions')
+            li(v-for='question in choosedQuestions')
               span {{question.description}}
 
   .one.column.row

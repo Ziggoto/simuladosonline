@@ -86,8 +86,8 @@ export default {
     })
 
     ExamService.examsToCorrect()
-    .then(resolve => {
-      console.log('Exams to correct ', resolve)
+    .then(response => {
+      this.examsToCorrect = response
     })
     .catch(err => {
       console.error('Err ', err)

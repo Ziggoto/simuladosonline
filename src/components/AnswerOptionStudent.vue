@@ -2,18 +2,21 @@
 .question
   p #[b {{number}})] {{description}}
   .ui.form
-    .inline.field(v-for='option in options')
-      input(type='checkbox', :value='option.content', v-model='answer')
-      label {{option.content}}
+    .inline.field(v-for='(option, index) in options')
+      input(type='checkbox', :value='option.description', v-model='answer')
+      label(v-bind:class='answeredOptions.find(option.description) ? "answered" : ""') {{option.description}}
 </template>
 
 <script>
 export default {
-  props: ['number', 'description', 'options'],
+  props: ['number', 'description', 'options', 'answeredOptions'],
   data () {
     return {
       answer: []
     }
+  },
+  mounted () {
+    console.log('Answers: ', this.answeredOptions)
   },
   watch: {
     answer: {
@@ -32,4 +35,8 @@ p
 
 label
   font-weight: normal !important
+
+.answered
+  color: green !important
+  font-weight: bold !important
 </style>
