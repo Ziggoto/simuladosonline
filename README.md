@@ -1,30 +1,30 @@
-# sas-test
+Simulados Online
+===================
 
-> A Vue.js project
+It's a simple platform totally written with Vue 2.x with Feathers.js
 
-## Build Setup
+----------
 
-``` bash
-# install dependencies
-npm install
+Install
+-------------
+> git clone --recursive ...
+> npm install
+> cd server && npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
+Needs to run in different instances of terminal
 
-# build for production with minification
-npm run build
+Client (root of project)
+> npm run dev
 
-# build for production and view the bundle analyzer report
-npm run build --report
+Server 
+> npm start
 
-# run unit tests
-npm run unit
+Next Steps
+-------------
 
-# run e2e tests
-npm run e2e
+ - Change from Vue Resources to Feathers Client library
+ -  Change from NeDB to PostgreSQL
+ -  Integration with OneSignal
+ -  Mobile App
+ -  Add continous integration and unit tests
 
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
