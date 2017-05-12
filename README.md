@@ -7,7 +7,7 @@ It's a simple platform totally written with Vue 2.x with Feathers.js
 
 Install
 -------------
-> git clone --recursive ...
+> git clone --recursive https://github.com/Ziggoto/simuladosonline.git
 > npm install
 > cd server && npm install
 
@@ -16,7 +16,7 @@ Needs to run in different instances of terminal
 Client (root of project)
 > npm run dev
 
-Server 
+Server
 > npm start
 
 Next Steps
@@ -27,4 +27,3 @@ Next Steps
  -  Integration with OneSignal
  -  Mobile App
  -  Add continous integration and unit tests
-
