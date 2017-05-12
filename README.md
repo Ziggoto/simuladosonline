@@ -1,23 +1,21 @@
 Simulados Online
 ===================
 
-It's a simple platform totally written with Vue 2.x with Feathers.js
-
-----------
-
+It's a simple platform totally written with Vue 2.x with Feathers.js  
+  
 Install
 -------------
-> git clone --recursive https://github.com/Ziggoto/simuladosonline.git
-> npm install
-> cd server && npm install
+> git clone --recursive https://github.com/Ziggoto/simuladosonline.git  
+> npm install  
+> cd server && npm install  
 
 Needs to run in different instances of terminal
 
 Client (root of project)
-> npm run dev
+> npm run dev  
 
 Server
-> npm start
+> npm start  
 
 Next Steps
 -------------
