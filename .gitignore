@@ -7,3 +7,16 @@ test/e2e/reports
 selenium-debug.log
 TODO.txt
 dist/
+server/logs
+server/*.log
+server/pids
+server/*.pid
+server/*.seed
+server/lib-cov
+server/coverage
+server/.grunt
+server/build/Release
+server/node_modules
+server/.lock-wscript
+server/lib/
+server/data/
