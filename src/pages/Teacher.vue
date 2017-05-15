@@ -10,6 +10,18 @@ div
       .ui.button(@click='hideModal') Cancel
       .ui.button(@click='sendExam') OK
 
+  .ui.modal(ref='registrationModal')
+    i.close.icon
+    .header
+      | Cadastro de novo aluno
+    .content
+      .ui.form
+        .field
+          input(type='text', placeholder='Insira nome do novo aluno', v-model='newStudent')
+    .actions
+      .ui.button(@click='hideModal') Cancel
+      .ui.button(@click='registerStudent') OK
+
   .ui.grid
     .one.column.row
       .ui.text.container
@@ -17,6 +29,7 @@ div
     .one.column.row
       .ui.text.container
         router-link.primary.ui.button(to='question') Cadastrar questão
+        a.primary.ui.button(@click='openRegisterModal') Matricular aluno
     .two.column.row
       .column
         .ui.stacked.segment
@@ -68,8 +81,9 @@ export default {
       students: [],
       exams: [],
       sendList: [],
+      examsToCorrect: [],
       examToSend: '',
-      examsToCorrect: []
+      newStudent: ''
     }
   },
   mounted () {
@@ -98,6 +112,9 @@ export default {
       this.examToSend = examId
       $(this.$refs.studentsModal).modal('show')
     },
+    openRegisterModal () {
+      $(this.$refs.registrationModal).modal('show')
+    },
     updateSendList (data) {
       if (data.status) {
         this.sendList.push(data.student)
@@ -112,6 +129,16 @@ export default {
     },
     hideModal () {
       $(this.$refs.studentsModal).modal('hide')
+      $(this.$refs.registrationModal).modal('hide')
+    },
+    registerStudent () {
+      this.hideModal()
+
+      ExamService.createStudent(this.newStudent).then(response => {
+        this.$swal('Aluno matriculado', 'Agora ele estará disponivel para receber os TDs', 'success')
+      }, err => {
+        console.error('Err... ', err)
+      })
     },
     sendExam () {
       console.log(`Send TD ${this.examToSend} to ${this.sendList}`)

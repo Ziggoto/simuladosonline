@@ -6,6 +6,13 @@ export default {
     // TODO criar um service só pra isso
     return Vue.http.get(`${this.endpoint}/students`)
   },
+  createStudent (studentName) {
+    return Vue.http.post(`${this.endpoint}/students`, {
+      name: studentName,
+      todoExams: [],
+      doneExams: []
+    })
+  },
   getAll () {
     return Vue.http.get(`${this.endpoint}/exams`)
   },
