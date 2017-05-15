@@ -15,6 +15,17 @@
           span
             a.ui.primary.icon.button(@click='doTest(exam._id)')
               i.write.icon
+  .one.column.row.tds-todo
+    .ui.stacked.segment
+      .ui.container
+        .ui.header
+          span Resultado de TDs anteriores
+
+      .ui.segments
+        .ui.segment(v-for='grade in grades')
+          span {{grade.exam}}
+          span
+            a.ui.primary.button {{grade.grade}}
 </template>
 
 <script>
@@ -23,13 +34,15 @@ import Vue from 'vue'
 export default {
   data () {
     return {
-      exams: []
+      exams: [],
+      grades: []
     }
   },
   mounted () {
     const endpoint = `http://localhost:3030/students?_id=${this.$route.params.id}`
     Vue.http.get(endpoint).then(response => {
       this.exams = response.body.data[0].todoExams
+      this.grades = response.body.data[0].grades
     }, err => {
       console.error('err ', err)
     })
