@@ -2,13 +2,13 @@
 
 const globalHooks = require('../../../hooks');
 const hooks = require('feathers-hooks');
-
+const trim = require('./trim');
 
 exports.before = {
   all: [],
   find: [],
   get: [],
-  create: [],
+  create: [trim()],
   update: [],
   patch: [],
   remove: []

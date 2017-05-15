@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import _ from 'lodash'
 
 export default {
   endpoint: 'http://localhost:3030',
@@ -10,21 +11,51 @@ export default {
     return Vue.http.post(`${this.endpoint}/students`, {
       name: studentName,
       todoExams: [],
-      doneExams: []
+      doneExams: [],
+      grades: []
     })
   },
   getAll () {
     return Vue.http.get(`${this.endpoint}/exams`)
   },
+  calcGrade (correctAnswers, studentAnswers) {
+    let sum = 0
+    const correctArray = _.values(correctAnswers)
+    const studentAnswersArray = _.values(studentAnswers)
+    const total = correctArray.length
+
+    correctArray.forEach((el, index, array) => {
+      try {
+        if (_.isEqual(el, studentAnswersArray[index])) {
+          sum++
+        }
+      } catch (err) {
+        console.error('Err ', err)
+      }
+    })
+
+    return (sum / total) * 100
+  },
   getAnsweredExam (studentId, examId) {
     return new Promise((resolve, reject) => {
       Vue.http.get(`${this.endpoint}/students/${studentId}`)
       .then(response => {
-        console.log('My response... ', response)
         resolve(response.body.doneExams.find(exam => exam._id === examId))
       }, err => {
         reject(err)
       })
+    })
+  },
+  updateGrade (studentId, grade) {
+    return Vue.http.put(`${this.endpoint}/students/${studentId}`, {
+      $push: {
+        grades: grade
+      },
+      $pull: {
+        doneExams: {
+          '_id': grade.exam
+        }
+      }
     })
   },
   answerExam (studentId, answers) {

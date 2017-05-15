@@ -1,12 +1,13 @@
 <template lang="pug">
 .ui.text.container
-  .ui.header {{exam.title}}
-  answer-option(v-for='(question, index) in exam.questions', :number='index + 1', :description='exam.questions[index].description', :options='exam.questions[index].options', :answeredOptions='exam.answers[index + 1]')
+  .ui.header {{exam.name}}
+  answer-option(v-for='(question, index) in exam.questions', :number='index + 1', :description='exam.questions[index].description', :options='exam.questions[index].options', :answeredOptions='exam.answers[index + 1]', @updateAnswer='updateAnswer')
   p
-    a.ui.positive.button(@click='finish') Finalizar TD
+    a.ui.positive.button(@click='finish') Corrigir TD
 </template>
 
 <script>
+// import _ from 'lodash'
 import ExamService from '@/services/ExamService'
 import AnswerOption from '@/components/AnswerOptionStudent'
 
@@ -16,7 +17,8 @@ export default {
   },
   data () {
     return {
-      exam: {}
+      exam: {},
+      correctAnswers: {}
     }
   },
   mounted () {
@@ -28,11 +30,22 @@ export default {
     })
   },
   methods: {
+    updateAnswer (answer) {
+      this.correctAnswers[answer.number] = answer.value
+    },
     finish () {
-      // console.log('Save TD')
-      this.$swal('TD enviado', 'Aguarde que o seu TD será corrigido', 'success')
-      .then(() => {
-        this.$router.push('/student')
+      const newGrade = {
+        exam: this.$route.params.examId,
+        grade: ExamService.calcGrade(this.correctAnswers, this.exam.answers)
+      }
+
+      ExamService.updateGrade(this.$route.params.student, newGrade).then(response => {
+        this.$swal('Nota atribuída com sucesso', `Nota final desse aluno foi ${newGrade.grade}`, 'success')
+        .then(() => {
+          this.$router.push('/teacher')
+        })
+      }, err => {
+        console.error('Err... ', err)
       })
     }
   }

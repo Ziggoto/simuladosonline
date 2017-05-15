@@ -35,7 +35,8 @@ export default {
       ExamService.answerExam(this.$route.params.student, answeredExam).then(response => {
         this.$swal('TD enviado', 'Aguarde que o seu TD será corrigido', 'success').then(() => {
           setTimeout(() => {
-            this.$router.push('/student')
+            // this.$router.push('/student')
+            this.$router.push({ name: 'Student', params: { id: this.$route.params.student } })
           }, 200)
         })
       }, err => {

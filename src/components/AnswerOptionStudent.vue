@@ -4,7 +4,7 @@
   .ui.form
     .inline.field(v-for='(option, index) in options')
       input(type='checkbox', :value='option.description', v-model='answer')
-      label(v-bind:class='answeredOptions.find(option.description) ? "answered" : ""') {{option.description}}
+      label {{option.description}}
 </template>
 
 <script>
@@ -13,6 +13,14 @@ export default {
   data () {
     return {
       answer: []
+    }
+  },
+  methods: {
+    isAnswered (option) {
+      if (this.answeredOptions && this.answeredOptions.find(option.description)) {
+        return true
+      }
+      return false
     }
   },
   mounted () {
